@@ -9,14 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/employeepayrollservice")
-public class
-
-
-
-
-
-
-EmployeePayrollController {
+public class EmployeePayrollController {
+    private static final String EMPLOYEE_ADDED_SUCCESSFULLY = "Employee Added Successfully";
+    private static final String EMPLOYEE_UPDATED_SUCCESSFULLY = "Employee Updated Successfully";
 
     @Autowired
     private EmployeePayrollService employeePayrollService;
@@ -33,14 +28,14 @@ EmployeePayrollController {
 
     @PostMapping("/employee")
     public ResponseEntity<String> addEmployeePayrollData(@RequestBody EmployeeDto employeeDto) {
-        return new ResponseEntity<>(employeePayrollService.addEmployee(employeeDto), HttpStatus.OK);
-    }
+        employeePayrollService.addEmployee(employeeDto);
+        return new ResponseEntity<>(EMPLOYEE_ADDED_SUCCESSFULLY, HttpStatus.OK);    }
 
     @PutMapping("/employee/{id}")
     public ResponseEntity<String> updateEmployeePayrollData(@PathVariable(value = "id") int id,
                                                             @RequestBody EmployeeDto EmployeeDto) {
-        return new ResponseEntity<>(employeePayrollService.updateEmployee(id, EmployeeDto), HttpStatus.OK);
-    }
+        employeePayrollService.updateEmployee(id, EmployeeDto);
+        return new ResponseEntity<>(EMPLOYEE_UPDATED_SUCCESSFULLY, HttpStatus.OK);    }
 
     @DeleteMapping("/employee/{id}")
     public ResponseEntity<String> deleteEmployeePayrollData(@PathVariable("id") int id) {

@@ -10,9 +10,9 @@ public interface IEmployeePayrollService {
 
     Employee getEmployeeById(int empId);
 
-    String addEmployee(EmployeeDto empPayrollDto);
+    Employee addEmployee(EmployeeDto empPayrollDto);
 
-    String updateEmployee(int id, EmployeeDto employeeDto);
+    Employee updateEmployee(int id, EmployeeDto employeeDto);
 
     String deleteEmployee(int empId);
 }
