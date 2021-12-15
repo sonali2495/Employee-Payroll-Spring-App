@@ -8,11 +8,11 @@ import java.util.List;
 public interface IEmployeePayrollService {
     List<EmployeeDto> getAllEmployee();
 
-    Employee getEmployeeById(int empId);
+    EmployeeDto getEmployeeById(int empId);
 
-    Employee addEmployee(EmployeeDto empPayrollDto);
+    String addEmployee(EmployeeDto empPayrollDto);
 
-    Employee updateEmployee(int id, EmployeeDto employeeDto);
+    String updateEmployee(int id, EmployeeDto employeeDto);
 
     String deleteEmployee(int empId);
 }

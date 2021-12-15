@@ -1,5 +1,6 @@
 package com.bridgelabz.employeepayrollapp.service;
 
+import com.bridgelabz.employeepayrollapp.configuration.EmployeeConfiguration;
 import com.bridgelabz.employeepayrollapp.dto.EmployeeDto;
 import com.bridgelabz.employeepayrollapp.model.Employee;
 import com.bridgelabz.employeepayrollapp.repository.EmployeePayrollRepository;
@@ -13,43 +14,45 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class EmployeePayrollService<AtmConfiguration> implements IEmployeePayrollService{
-
+public class EmployeePayrollService<AtmConfiguration> implements IEmployeePayrollService {
+    private static final String EMPLOYEE_ADDED_SUCCESSFULLY = "Employee Added Successfully";
+    private static final String EMPLOYEE_UPDATED_SUCCESSFULLY = "Employee Updated Successfully";
     private static final String EMPLOYEE_DELETED_SUCCESSFULLY = "Employee Deleted Successfully";
 
     @Autowired
     private EmployeePayrollRepository employeeRepo;
+
     @Autowired
-    private AtmConfiguration atmConfiguration;
+    private EmployeeConfiguration employeeConfiguration;
+
     @Autowired
     private ModelMapper modelMapper;
 
     @Override
     public List<EmployeeDto> getAllEmployee() {
-        return employeeRepo.findAll()
-                .stream()
-                .map(Employee -> modelMapper.map(Employee, EmployeeDto.class))
-                .collect((Collectors.toList()));
+        return employeeRepo.findAll().stream().map(Employee ->
+                modelMapper.map(Employee, EmployeeDto.class)).collect((Collectors.toList()));
     }
 
     @Override
-    public Employee getEmployeeById(int empId) {
+    public EmployeeDto getEmployeeById(int empId) {
         checkIdPresentOrNot(empId);
-        return employeeRepo.findById(empId).get();
+        Employee employee = employeeRepo.findById(empId).get();
+        return modelMapper.map(employee, EmployeeDto.class);
     }
 
     @Override
-    public Employee addEmployee(EmployeeDto empPayrollDTO) {
-        Employee employee = new Employee();
-        BeanUtils.copyProperties(empPayrollDTO, employee);
+    public String addEmployee(EmployeeDto empPayrollDTO) {
+        Employee employee = modelMapper.map(empPayrollDTO, Employee.class);
         employeeRepo.save(employee);
-        return employeeRepo.save(employee);
+        return EMPLOYEE_ADDED_SUCCESSFULLY;
     }
 
-    public Employee updateEmployee(int id, EmployeeDto employeeDto) {
+    public String updateEmployee(int id, EmployeeDto employeeDto) {
         Employee employee = checkIdPresentOrNot(id);
         BeanUtils.copyProperties(employeeDto, employee);
-        return employeeRepo.save(employee);
+        employeeRepo.save(employee);
+        return EMPLOYEE_UPDATED_SUCCESSFULLY;
     }
 
     public String deleteEmployee(int empId) {

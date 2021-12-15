@@ -5,6 +5,7 @@ import com.bridgelabz.employeepayrollapp.model.Employee;
 import com.bridgelabz.employeepayrollapp.repository.EmployeePayrollRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -18,104 +19,203 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class EmployePayrollServiceTest {
-    @Mock
-    private EmployeePayrollRepository payrollRepository;
-
     @InjectMocks
-    private EmployeePayrollService payrollService;
-
+    private EmployeePayrollService service;
     @Mock
     private ModelMapper modelMapper;
+    @Mock
+    private EmployeePayrollRepository repository;
 
     @Test
-    void whenAddEmployee_shouldReturnEmployeeDto() {
-        Employee employee = new Employee();
-        employee.setName("Sonali");
-        employee.setSalary(100000);
-        EmployeeDto employeeDto = new EmployeeDto();
-        BeanUtils.copyProperties(employee, employeeDto);
-        when(payrollService.addEmployee(employeeDto)).thenReturn(employee);
-        Employee employeeCreated = payrollService.addEmployee(employeeDto);
-        assertEquals(employeeDto.getName(), employeeCreated.getName());
-        assertEquals(employeeDto.getSalary(), employeeCreated.getSalary());
-    }
+    void whenGetAllMethodCalled_shouldReturnListOfEmployee() {
+        List<Employee> employeeEntityList = new ArrayList<>();
 
-    @Test
-    void whenGetAllEmployeeCalled_ShouldReturnListOfEmployees() {
-        List<Employee> employee = new ArrayList<>();
+        Employee employeeEntity1 = new Employee();
+        employeeEntity1.setId(1);
+        employeeEntity1.setName("Sonali G");
+        employeeEntity1.setImagePath("/img1");
+        employeeEntity1.setGender("Female");
+        employeeEntity1.setSalary("100000");
+        employeeEntity1.setDepartment("IT");
+        employeeEntity1.setNotes("Test");
+        employeeEntityList.add(employeeEntity1);
 
-        Employee employee1 = new Employee();
-        employee1.setId(1);
-        employee1.setName("Sonali");
-        employee1.setSalary(100000);
-        employee.add(employee1);
-
-        Employee employee2 = new Employee();
-        employee2.setId(2);
-        employee2.setName("Chris");
-        employee2.setSalary(100000);
-        employee.add(employee2);
+        Employee employeeEntity2 = new Employee();
+        employeeEntity1.setId(2);
+        employeeEntity2.setName("Chris E");
+        employeeEntity2.setImagePath("/img1");
+        employeeEntity2.setGender("Male");
+        employeeEntity2.setSalary("100000");
+        employeeEntity2.setDepartment("IT");
+        employeeEntity2.setNotes("Test");
+        employeeEntityList.add(employeeEntity2);
 
         List<EmployeeDto> employeeDtoList = new ArrayList<>();
+
+        EmployeeDto employee1 = new EmployeeDto();
+        employee1.setName(employeeEntity1.getName());
+        employee1.setImagePath(employeeEntity1.getImagePath());
+        employee1.setGender(employeeEntity1.getGender());
+        employee1.setSalary(employeeEntity1.getSalary());
+        employee1.setDepartment(employeeEntity1.getDepartment());
+        employee1.setNotes(employeeEntity1.getNotes());
+        employeeDtoList.add(employee1);
+
+        EmployeeDto employee2 = new EmployeeDto();
+        employee2.setName(employeeEntity2.getName());
+        employee2.setImagePath(employeeEntity2.getImagePath());
+        employee2.setGender(employeeEntity2.getGender());
+        employee2.setSalary(employeeEntity2.getSalary());
+        employee2.setDepartment(employeeEntity2.getDepartment());
+        employee2.setNotes(employeeEntity2.getNotes());
+        employeeDtoList.add(employee2);
+
+
+        when(repository.findAll()).thenReturn(employeeEntityList);
+        when(modelMapper.map(employeeEntityList.get(0),
+                EmployeeDto.class)).thenReturn(employee1);
+        when(modelMapper.map(employeeEntityList.get(1),
+                EmployeeDto.class)).thenReturn(employee2);
+        List<EmployeeDto> actualResponse = service.getAllEmployee();
+        assertEquals(2, actualResponse.size());
+        assertEquals(employeeDtoList, actualResponse);
+    }
+
+    @Test
+    void whenAddMethodCalled_shouldReturnSuccessMessage() {
+        String expectedMessage = "Employee Added Successfully";
         EmployeeDto employeeDto = new EmployeeDto();
         employeeDto.setName("Sonali");
-        employeeDto.setSalary(100000);
-        employeeDtoList.add(employeeDto);
+        employeeDto.setImagePath("/img1");
+        employeeDto.setGender("Female");
+        employeeDto.setSalary("100000");
+        employeeDto.setDepartment("IT");
+        employeeDto.setNotes("Test");
 
-        EmployeeDto employeeDto1 = new EmployeeDto();
-        employeeDto1.setName("Chris");
-        employeeDto1.setSalary(100000);
-        employeeDtoList.add(employeeDto1);
+        Employee employeeEntity = new Employee();
+        employeeEntity.setId(1);
+        employeeEntity.setName(employeeDto.getName());
+        employeeEntity.setImagePath(employeeDto.getImagePath());
+        employeeEntity.setGender(employeeDto.getGender());
+        employeeEntity.setSalary(employeeDto.getSalary());
+        employeeEntity.setDepartment(employeeDto.getDepartment());
+        employeeEntity.setNotes(employeeDto.getNotes());
 
-        when(payrollRepository.findAll()).thenReturn(employee);
-        when(modelMapper.map(employee.get(0), EmployeeDto.class)).thenReturn(employeeDto);
-        when(modelMapper.map(employee.get(1), EmployeeDto.class)).thenReturn(employeeDto1);
-        List<EmployeeDto> actualList = payrollService.getAllEmployee();
-        assertEquals(2, actualList.size());
-        assertEquals(employeeDtoList, actualList);
+        when(modelMapper.map(employeeDto, Employee.class))
+                .thenReturn(employeeEntity);
+        String actualMessage = service.addEmployee(employeeDto);
+        assertEquals(expectedMessage, actualMessage);
     }
 
     @Test
-    void whenUpdateEmployeeCalled_shouldUpdate() {
+    void whenUpdateEmployeeCalled_shouldReturnSuccessMessage() {
+        ArgumentCaptor<Employee> employeeEntityArgumentCaptor = ArgumentCaptor.forClass(Employee.class);
+        String expectedMessage = "Employee Updated Successfully";
+
         int id = 1;
-        Employee employee = new Employee();
-        employee.setId(id);
-        employee.setName("Sonali");
-        employee.setSalary(10000);
+        EmployeeDto employeeDto = new EmployeeDto();
+        employeeDto.setName("Sonali");
+        employeeDto.setImagePath("/img1");
+        employeeDto.setGender("Female");
+        employeeDto.setSalary("100000");
+        employeeDto.setDepartment("IT");
+        employeeDto.setNotes("Test");
 
-        EmployeeDto newEmployee = new EmployeeDto();
-        newEmployee.setName("Chrish");
-        newEmployee.setSalary(99999);
+        Employee employeeEntity = new Employee();
+        employeeEntity.setId(id);
+        employeeEntity.setName("Chris");
+        employeeEntity.setImagePath("/img2");
+        employeeEntity.setGender("Male");
+        employeeEntity.setSalary("100000");
+        employeeEntity.setDepartment("IT");
+        employeeEntity.setNotes("Test");
 
-        when(payrollRepository.findById(employee.getId())).thenReturn(Optional.of(employee));
-        when(payrollService.updateEmployee(id, newEmployee))
-                .thenReturn(employee);
-        Employee employee1 = payrollService.updateEmployee(id, newEmployee);
-        employee.setId(id);
-        employee.setName("Chris");
-        employee.setSalary(99999);
-        assertEquals(employee1, employee);
+        when(repository.findById(id)).thenReturn(Optional.of(employeeEntity));
+        employeeEntity.setId(id);
+        employeeEntity.setName(employeeDto.getName());
+        employeeEntity.setImagePath(employeeDto.getImagePath());
+        employeeEntity.setGender(employeeDto.getGender());
+        employeeEntity.setSalary(employeeDto.getSalary());
+        employeeEntity.setDepartment(employeeDto.getDepartment());
+        employeeEntity.setNotes(employeeDto.getNotes());
+//       when(employeeBuilder.buildEmployeeEntity(employeeDto, employeeEntity)).thenReturn(employeeEntity);
+        String actualMessage = service.updateEmployee(id, employeeDto);
+        verify(repository, times(1))
+                .save(employeeEntityArgumentCaptor.capture());
+        assertEquals(expectedMessage, actualMessage);
+        assertEquals(employeeDto.getName(), employeeEntityArgumentCaptor.getValue().getName());
+        assertEquals(employeeDto.getImagePath(), employeeEntityArgumentCaptor.getValue().getImagePath());
+        assertEquals(employeeDto.getGender(), employeeEntityArgumentCaptor.getValue().getGender());
+        assertEquals(employeeDto.getSalary(), employeeEntityArgumentCaptor.getValue().getSalary());
+        assertEquals(employeeDto.getDepartment(),
+                employeeEntityArgumentCaptor.getValue().getDepartment());
+        assertEquals(employeeDto.getNotes(), employeeEntityArgumentCaptor.getValue().getNotes());
     }
 
     @Test
-    void whenDeleteEmployeeCalled_ShouldDelete() {
-        String EMPLOYEE_DELETED_SUCCESSFULLY = "Employee Deleted Successfully";
+    void givenId_whenNotFound_shouldThrowException() {
         int id = 1;
-        Employee employee = new Employee();
-        employee.setId(id);
-        employee.setName("Sonali");
-        employee.setSalary(100000);
-        when(payrollRepository.findById(id)).thenReturn(Optional.of(employee));
-        String actualMessage = payrollService.deleteEmployee(id);
-        assertEquals(EMPLOYEE_DELETED_SUCCESSFULLY, actualMessage);
+        when(repository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class,
+                () -> service.checkIdPresentOrNot(id));
     }
 
     @Test
-    void WhenGivenIdIsNotFound_ShouldThrowException() {
-        assertThrows(EntityNotFoundException.class, () -> payrollService.checkIdPresentOrNot(1));
+    void whenDeleteEmployeeCalled_shouldReturnSuccessMessage() {
+        int id = 1;
+        String expectedMessage = "Employee Deleted Successfully";
+
+        EmployeeDto employeeDto = new EmployeeDto();
+        employeeDto.setName("Sonali");
+        employeeDto.setImagePath("/img1");
+        employeeDto.setGender("Female");
+        employeeDto.setSalary("100000");
+        employeeDto.setDepartment("IT");
+        employeeDto.setNotes("Test");
+
+        Employee employeeEntity = new Employee();
+        employeeEntity.setId(id);
+        employeeEntity.setName(employeeDto.getName());
+        employeeEntity.setImagePath(employeeDto.getImagePath());
+        employeeEntity.setGender(employeeDto.getGender());
+        employeeEntity.setSalary(employeeDto.getSalary());
+        employeeEntity.setDepartment(employeeDto.getDepartment());
+        employeeEntity.setNotes(employeeDto.getNotes());
+
+        when(repository.findById(id)).thenReturn(Optional.of(employeeEntity));
+        String actualMessage = service.deleteEmployee(id);
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test
+    void whenGetEmployeeByIDCalled_shouldReturnEmployeeDto() {
+        int id = 1;
+
+        EmployeeDto employeeDto = new EmployeeDto();
+        employeeDto.setName("Chris");
+        employeeDto.setImagePath("/img2");
+        employeeDto.setGender("Male");
+        employeeDto.setSalary("100000");
+        employeeDto.setDepartment("IT");
+        employeeDto.setNotes("Test");
+
+        Employee employeeEntity = new Employee();
+        employeeEntity.setId(id);
+        employeeEntity.setName("Chris");
+        employeeEntity.setImagePath("/img2");
+        employeeEntity.setGender("Male");
+        employeeEntity.setSalary("100000");
+        employeeEntity.setDepartment("IT");
+        employeeEntity.setNotes("Test");
+
+        when(repository.findById(id)).thenReturn(Optional.of(employeeEntity));
+        when(modelMapper.map(employeeEntity, EmployeeDto.class))
+                .thenReturn(employeeDto);
+        EmployeeDto actualEmployee = service.getEmployeeById(id);
+        assertEquals(employeeDto, actualEmployee);
     }
 }
