@@ -4,6 +4,12 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+/**
+ * Purpose: To Get The Basic Structure of Data
+ *
+ * @author : Sonali G
+ * @since : 13-12-2021
+ */
 @Entity
 @Table(name = "employee")
 @Data

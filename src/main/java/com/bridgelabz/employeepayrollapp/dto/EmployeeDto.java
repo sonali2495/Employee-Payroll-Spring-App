@@ -5,6 +5,12 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+/**
+ * Purpose: To Get Data From End User
+ *
+ * @author : Sonali G
+ * @since : 13-12-2021
+ */
 @Data
 public class EmployeeDto {
     @NotNull
@@ -12,12 +18,8 @@ public class EmployeeDto {
     private String name;
 
     private String imagePath;
-
     private String gender;
-
     private String salary;
-
     private String department;
-
     private String notes;
 }
