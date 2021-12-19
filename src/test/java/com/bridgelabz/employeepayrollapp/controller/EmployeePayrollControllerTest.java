@@ -30,7 +30,7 @@ public class EmployeePayrollControllerTest {
         employeeDto1.setImagePath("/img1");
         employeeDto1.setGender("Female");
         employeeDto1.setSalary("100000");
-        employeeDto1.setDepartment("IT");
+        employeeDto1.setDepartments(List.of("Marketing"));
         employeeDto1.setNotes("Test");
         employeeDtoList.add(employeeDto1);
 
@@ -39,7 +39,7 @@ public class EmployeePayrollControllerTest {
         employeeDto2.setImagePath("/img1");
         employeeDto2.setGender("Female");
         employeeDto2.setSalary("100000");
-        employeeDto2.setDepartment("IT");
+        employeeDto2.setDepartments(List.of("Marketing"));
         employeeDto2.setNotes("Test");
         employeeDtoList.add(employeeDto2);
 
@@ -50,7 +50,7 @@ public class EmployeePayrollControllerTest {
             assertEquals(employeeDtoList.get(i).getImagePath(), actualResponse.get(i).getImagePath());
             assertEquals(employeeDtoList.get(i).getGender(), actualResponse.get(i).getGender());
             assertEquals(employeeDtoList.get(i).getSalary(), actualResponse.get(i).getSalary());
-            assertEquals(employeeDtoList.get(i).getDepartment(), actualResponse.get(i).getDepartment());
+            assertEquals(employeeDtoList.get(i).getDepartments(), actualResponse.get(i).getDepartments());
             assertEquals(employeeDtoList.get(i).getNotes(), actualResponse.get(i).getNotes());
         }
     }
@@ -64,7 +64,7 @@ public class EmployeePayrollControllerTest {
         employeeDto.setImagePath("/img1");
         employeeDto.setGender("Female");
         employeeDto.setSalary("100000");
-        employeeDto.setDepartment("IT");
+        employeeDto.setDepartments(List.of("Marketing"));
         employeeDto.setNotes("Test");
 
         when(service.addEmployee(employeeDto)).thenReturn(expectedMessage);
@@ -81,7 +81,7 @@ public class EmployeePayrollControllerTest {
         employeeDto.setImagePath("/img1");
         employeeDto.setGender("Female");
         employeeDto.setSalary("100000");
-        employeeDto.setDepartment("IT");
+        employeeDto.setDepartments(List.of("Marketing"));
         employeeDto.setNotes("Test");
 
         when(service.updateEmployee(id, employeeDto)).thenReturn(expectedMessage);
@@ -99,7 +99,7 @@ public class EmployeePayrollControllerTest {
         employeeDto.setImagePath("/img1");
         employeeDto.setGender("Female");
         employeeDto.setSalary("100000");
-        employeeDto.setDepartment("IT");
+        employeeDto.setDepartments(List.of("Marketing"));
         employeeDto.setNotes("Test");
 
         when(service.deleteEmployee(id)).thenReturn(expectedMessage);
@@ -115,7 +115,7 @@ public class EmployeePayrollControllerTest {
         employeeDto.setImagePath("/img1");
         employeeDto.setGender("Female");
         employeeDto.setSalary("100000");
-        employeeDto.setDepartment("IT");
+        employeeDto.setDepartments(List.of("Marketing"));
         employeeDto.setNotes("Test");
 
         when(service.getEmployeeById(id)).thenReturn(employeeDto);

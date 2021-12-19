@@ -3,6 +3,7 @@ package com.bridgelabz.employeepayrollapp.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Purpose: To Get The Basic Structure of Data
@@ -23,6 +24,19 @@ public class Employee {
     private String imagePath;
     private String gender;
     private String salary;
-    private String department;
+
+    @ElementCollection
+    @CollectionTable(name = "employee_department", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "department")
+    private List<String> departments;
+
     private String notes;
+
+    public List<String> getDepartments() {
+        return departments;
+    }
+
+    public void setDepartments(List<String> departments) {
+        this.departments = departments;
+    }
 }

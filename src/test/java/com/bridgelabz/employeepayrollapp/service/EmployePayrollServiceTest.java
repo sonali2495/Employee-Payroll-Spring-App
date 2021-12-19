@@ -40,7 +40,7 @@ public class EmployePayrollServiceTest {
         employeeEntity1.setImagePath("/img1");
         employeeEntity1.setGender("Female");
         employeeEntity1.setSalary("100000");
-        employeeEntity1.setDepartment("IT");
+        employeeEntity1.setDepartments(List.of("Marketing"));
         employeeEntity1.setNotes("Test");
         employeeEntityList.add(employeeEntity1);
 
@@ -50,7 +50,7 @@ public class EmployePayrollServiceTest {
         employeeEntity2.setImagePath("/img1");
         employeeEntity2.setGender("Male");
         employeeEntity2.setSalary("100000");
-        employeeEntity2.setDepartment("IT");
+        employeeEntity2.setDepartments(List.of("Marketing"));
         employeeEntity2.setNotes("Test");
         employeeEntityList.add(employeeEntity2);
 
@@ -61,7 +61,7 @@ public class EmployePayrollServiceTest {
         employee1.setImagePath(employeeEntity1.getImagePath());
         employee1.setGender(employeeEntity1.getGender());
         employee1.setSalary(employeeEntity1.getSalary());
-        employee1.setDepartment(employeeEntity1.getDepartment());
+        employee1.setDepartments(employeeEntity1.getDepartments());
         employee1.setNotes(employeeEntity1.getNotes());
         employeeDtoList.add(employee1);
 
@@ -70,7 +70,7 @@ public class EmployePayrollServiceTest {
         employee2.setImagePath(employeeEntity2.getImagePath());
         employee2.setGender(employeeEntity2.getGender());
         employee2.setSalary(employeeEntity2.getSalary());
-        employee2.setDepartment(employeeEntity2.getDepartment());
+        employee2.setDepartments(employeeEntity2.getDepartments());
         employee2.setNotes(employeeEntity2.getNotes());
         employeeDtoList.add(employee2);
 
@@ -93,7 +93,7 @@ public class EmployePayrollServiceTest {
         employeeDto.setImagePath("/img1");
         employeeDto.setGender("Female");
         employeeDto.setSalary("100000");
-        employeeDto.setDepartment("IT");
+        employeeDto.setDepartments(List.of("Marketing"));
         employeeDto.setNotes("Test");
 
         Employee employeeEntity = new Employee();
@@ -102,7 +102,7 @@ public class EmployePayrollServiceTest {
         employeeEntity.setImagePath(employeeDto.getImagePath());
         employeeEntity.setGender(employeeDto.getGender());
         employeeEntity.setSalary(employeeDto.getSalary());
-        employeeEntity.setDepartment(employeeDto.getDepartment());
+        employeeEntity.setDepartments(employeeDto.getDepartments());
         employeeEntity.setNotes(employeeDto.getNotes());
 
         when(modelMapper.map(employeeDto, Employee.class))
@@ -122,7 +122,7 @@ public class EmployePayrollServiceTest {
         employeeDto.setImagePath("/img1");
         employeeDto.setGender("Female");
         employeeDto.setSalary("100000");
-        employeeDto.setDepartment("IT");
+        employeeDto.setDepartments(List.of("Marketing"));
         employeeDto.setNotes("Test");
 
         Employee employeeEntity = new Employee();
@@ -131,7 +131,7 @@ public class EmployePayrollServiceTest {
         employeeEntity.setImagePath("/img2");
         employeeEntity.setGender("Male");
         employeeEntity.setSalary("100000");
-        employeeEntity.setDepartment("IT");
+        employeeEntity.setDepartments(List.of("Marketing"));
         employeeEntity.setNotes("Test");
 
         when(repository.findById(id)).thenReturn(Optional.of(employeeEntity));
@@ -140,7 +140,7 @@ public class EmployePayrollServiceTest {
         employeeEntity.setImagePath(employeeDto.getImagePath());
         employeeEntity.setGender(employeeDto.getGender());
         employeeEntity.setSalary(employeeDto.getSalary());
-        employeeEntity.setDepartment(employeeDto.getDepartment());
+        employeeEntity.setDepartments(employeeDto.getDepartments());
         employeeEntity.setNotes(employeeDto.getNotes());
 //       when(employeeBuilder.buildEmployeeEntity(employeeDto, employeeEntity)).thenReturn(employeeEntity);
         String actualMessage = service.updateEmployee(id, employeeDto);
@@ -151,8 +151,8 @@ public class EmployePayrollServiceTest {
         assertEquals(employeeDto.getImagePath(), employeeEntityArgumentCaptor.getValue().getImagePath());
         assertEquals(employeeDto.getGender(), employeeEntityArgumentCaptor.getValue().getGender());
         assertEquals(employeeDto.getSalary(), employeeEntityArgumentCaptor.getValue().getSalary());
-        assertEquals(employeeDto.getDepartment(),
-                employeeEntityArgumentCaptor.getValue().getDepartment());
+        assertEquals(employeeDto.getDepartments(),
+                employeeEntityArgumentCaptor.getValue().getDepartments());
         assertEquals(employeeDto.getNotes(), employeeEntityArgumentCaptor.getValue().getNotes());
     }
 
@@ -174,7 +174,7 @@ public class EmployePayrollServiceTest {
         employeeDto.setImagePath("/img1");
         employeeDto.setGender("Female");
         employeeDto.setSalary("100000");
-        employeeDto.setDepartment("IT");
+        employeeDto.setDepartments(List.of("Marketing"));
         employeeDto.setNotes("Test");
 
         Employee employeeEntity = new Employee();
@@ -183,7 +183,7 @@ public class EmployePayrollServiceTest {
         employeeEntity.setImagePath(employeeDto.getImagePath());
         employeeEntity.setGender(employeeDto.getGender());
         employeeEntity.setSalary(employeeDto.getSalary());
-        employeeEntity.setDepartment(employeeDto.getDepartment());
+        employeeEntity.setDepartments(employeeDto.getDepartments());
         employeeEntity.setNotes(employeeDto.getNotes());
 
         when(repository.findById(id)).thenReturn(Optional.of(employeeEntity));
@@ -200,7 +200,7 @@ public class EmployePayrollServiceTest {
         employeeDto.setImagePath("/img2");
         employeeDto.setGender("Male");
         employeeDto.setSalary("100000");
-        employeeDto.setDepartment("IT");
+        employeeDto.setDepartments(List.of("Marketing"));
         employeeDto.setNotes("Test");
 
         Employee employeeEntity = new Employee();
@@ -209,7 +209,7 @@ public class EmployePayrollServiceTest {
         employeeEntity.setImagePath("/img2");
         employeeEntity.setGender("Male");
         employeeEntity.setSalary("100000");
-        employeeEntity.setDepartment("IT");
+        employeeEntity.setDepartments(List.of("Marketing"));
         employeeEntity.setNotes("Test");
 
         when(repository.findById(id)).thenReturn(Optional.of(employeeEntity));
@@ -235,7 +235,7 @@ public class EmployePayrollServiceTest {
         employeeDto.setImagePath("/img2");
         employeeDto.setGender("Male");
         employeeDto.setSalary("100000");
-        employeeDto.setDepartment("IT");
+        employeeDto.setDepartments(List.of("Marketing"));
         employeeDto.setNotes("Test");
 
         when(repository.findById(id)).thenReturn(Optional.empty());

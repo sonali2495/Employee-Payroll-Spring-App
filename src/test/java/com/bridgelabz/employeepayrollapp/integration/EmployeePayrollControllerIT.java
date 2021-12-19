@@ -49,7 +49,7 @@ public class EmployeePayrollControllerIT {
         employeeDto.setImagePath("/img1");
         employeeDto.setGender("Female");
         employeeDto.setSalary("100000");
-        employeeDto.setDepartment("IT");
+        employeeDto.setDepartments(List.of("Marketing"));
         employeeDto.setNotes("Test");
         String jsonRequest = objectMapper.writeValueAsString(employeeDto);
         when(employeePayrollService.addEmployee(any())).thenReturn("success");
@@ -66,7 +66,7 @@ public class EmployeePayrollControllerIT {
         employeeDto.setImagePath("/img1");
         employeeDto.setGender("Female");
         employeeDto.setSalary("100000");
-        employeeDto.setDepartment("IT");
+        employeeDto.setDepartments(List.of("Marketing"));
         employeeDto.setNotes("Test");
 
         String jsonRequest = objectMapper.writeValueAsString(employeeDto);
@@ -95,7 +95,7 @@ public class EmployeePayrollControllerIT {
         employeeDto.setImagePath("/img1");
         employeeDto.setGender("Female");
         employeeDto.setSalary("100000");
-        employeeDto.setDepartment("IT");
+        employeeDto.setDepartments(List.of("Marketing"));
         employeeDto.setNotes("Test");
         when(employeePayrollService.getEmployeeById(id)).thenReturn(employeeDto);
         mockMvc.perform(MockMvcRequestBuilders
