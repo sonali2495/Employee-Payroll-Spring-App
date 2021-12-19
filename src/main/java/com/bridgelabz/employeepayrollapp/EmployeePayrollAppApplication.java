@@ -2,6 +2,7 @@ package com.bridgelabz.employeepayrollapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 
 /**
@@ -10,7 +11,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author : Sonali G
  * @since : 13-12-2021
  */
+
+
 @SpringBootApplication
+@EnableSwagger2
 public class EmployeePayrollAppApplication {
 
     public static void main(String[] args) {
