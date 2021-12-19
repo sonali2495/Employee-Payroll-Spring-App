@@ -218,4 +218,35 @@ public class EmployePayrollServiceTest {
         EmployeeDto actualEmployee = service.getEmployeeById(id);
         assertEquals(employeeDto, actualEmployee);
     }
+
+    @Test
+    public void whenDeleteEmployeeCalled_IdNotExists_shouldThrowException() {
+        int id = 1;
+        when(repository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> service.deleteEmployee(id));
+    }
+
+    @Test
+    public void whenUpdateEmployeeCalled_IdNotExists_shouldThrowException() {
+        int id = 1;
+
+        EmployeeDto employeeDto = new EmployeeDto();
+        employeeDto.setName("Chris");
+        employeeDto.setImagePath("/img2");
+        employeeDto.setGender("Male");
+        employeeDto.setSalary("100000");
+        employeeDto.setDepartment("IT");
+        employeeDto.setNotes("Test");
+
+        when(repository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class,
+                () -> service.updateEmployee(id, employeeDto));
+    }
+
+    @Test
+    public void whenGetEmployeeCalled_IdNotExists_shouldThrowException() {
+        int id = 1;
+        when(repository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> service.getEmployeeById(id));
+    }
 }
