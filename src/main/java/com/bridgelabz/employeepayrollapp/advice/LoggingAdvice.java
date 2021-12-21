@@ -25,7 +25,7 @@ public class LoggingAdvice {
     }
 
     /**
-     * Purpose : Defining log message with class, method names & parameters used in method.
+     * Purpose : To Define log message with class, method names & parameters used in method.
      *
      * @param proceedingJoinPoint : When invoked, the code execution jumps to the next advice or to the target method.
      * @return objectAfterProceeding : It's the response of that method.

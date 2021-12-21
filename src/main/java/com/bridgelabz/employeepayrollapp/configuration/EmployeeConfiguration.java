@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Primary;
  * @since: 13-12-2021
  */
 @Configuration
-public class  EmployeeConfiguration {
+public class EmployeeConfiguration {
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
