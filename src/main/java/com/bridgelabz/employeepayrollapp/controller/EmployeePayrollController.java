@@ -28,7 +28,7 @@ public class EmployeePayrollController {
      *
      * @return : list of all employee
      */
-    @RequestMapping(value = {"", "/", "/employee"})
+    @GetMapping(value = {"/list"})
     public List<EmployeeDto> getEmployeePayrollData() {
         return employeePayrollService.getAllEmployee();
     }
@@ -39,7 +39,7 @@ public class EmployeePayrollController {
      * @param empId to find the id in repository
      * @return dto of given id
      */
-    @GetMapping("/employee/{empId}")
+    @GetMapping("/employeebyid/{empId}")
     public EmployeeDto getEmployeePayrollData(@PathVariable("empId") int empId) {
         return employeePayrollService.getEmployeeById(empId);
     }
@@ -50,7 +50,7 @@ public class EmployeePayrollController {
      * @param employeeDto : this metadata gets added to repo
      * @return : success message for add
      */
-    @PostMapping("/employee")
+    @PostMapping("/create")
     public String addEmployeePayrollData(@Valid @RequestBody EmployeeDto employeeDto) {
         return employeePayrollService.addEmployee(employeeDto);
     }
@@ -62,8 +62,8 @@ public class EmployeePayrollController {
      * @param employeeDto for changing existing data to new
      * @return success message for update
      */
-    @PutMapping("/employee/{id}")
-    public String updateEmployeePayrollData(@PathVariable(value = "id") int id, @RequestBody EmployeeDto employeeDto) {
+    @PutMapping("/update/{id}")
+    public String updateEmployeePayrollData(@PathVariable(value = "id") int id, @Valid @RequestBody EmployeeDto employeeDto) {
         return employeePayrollService.updateEmployee(id, employeeDto);
     }
 
@@ -73,7 +73,7 @@ public class EmployeePayrollController {
      * @param id For Search in repo
      * @return success message for delete
      */
-    @DeleteMapping("/employee/{id}")
+    @DeleteMapping("/delete/{id}")
     public String deleteEmployeePayrollData(@PathVariable("id") int id) {
         return employeePayrollService.deleteEmployee(id);
     }

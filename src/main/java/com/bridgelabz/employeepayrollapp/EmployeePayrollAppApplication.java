@@ -12,9 +12,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @since : 13-12-2021
  */
 
-
 @SpringBootApplication
-@EnableSwagger2
 public class EmployeePayrollAppApplication {
 
     public static void main(String[] args) {

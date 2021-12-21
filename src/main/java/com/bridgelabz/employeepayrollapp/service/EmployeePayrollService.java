@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * @since : 13-12-2021
  */
 @Service
-public class EmployeePayrollService<EmployeeConfiguration> implements IEmployeePayrollService {
+public class EmployeePayrollService implements IEmployeePayrollService {
     private static final String EMPLOYEE_ADDED_SUCCESSFULLY = "Employee Added Successfully";
     private static final String EMPLOYEE_UPDATED_SUCCESSFULLY = "Employee Updated Successfully";
     private static final String EMPLOYEE_DELETED_SUCCESSFULLY = "Employee Deleted Successfully";

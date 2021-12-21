@@ -36,14 +36,14 @@ public class EmployeePayrollControllerIT {
     private EmployeePayrollService employeePayrollService;
 
     @Test
-    void getAllAddressTest() throws Exception {
+    void getAllEmployeeTest() throws Exception {
         when(employeePayrollService.getAllEmployee()).thenReturn(new ArrayList<>());
         mockMvc.perform(MockMvcRequestBuilders.get("/employeepayrollservice/employee"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void addAddressTest() throws Exception {
+    void addEmployeeTest() throws Exception {
         EmployeeDto employeeDto = new EmployeeDto();
         employeeDto.setName("Sonali");
         employeeDto.setImagePath("/img1");
@@ -59,7 +59,7 @@ public class EmployeePayrollControllerIT {
     }
 
     @Test
-    void updateAddressTest() throws Exception {
+    void updateEmployeeTest() throws Exception {
         int id = 1;
         EmployeeDto employeeDto = new EmployeeDto();
         employeeDto.setName("Sonali");
@@ -78,7 +78,7 @@ public class EmployeePayrollControllerIT {
     }
 
     @Test
-    void deleteAddressTest() throws Exception {
+    void deleteEmployeeTest() throws Exception {
         int id = 1;
         when(employeePayrollService.deleteEmployee(id)).thenReturn("Success");
         mockMvc.perform(MockMvcRequestBuilders
@@ -87,7 +87,7 @@ public class EmployeePayrollControllerIT {
     }
 
     @Test
-    void getAddressTest() throws Exception {
+    void getEmployeeTest() throws Exception {
         int id = 1;
 
         EmployeeDto employeeDto = new EmployeeDto();
@@ -100,5 +100,40 @@ public class EmployeePayrollControllerIT {
         when(employeePayrollService.getEmployeeById(id)).thenReturn(employeeDto);
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/employeepayrollservice/employee/1")).andExpect(status().isOk());
+    }
+
+    @Test
+    public void givenEmployeeForAdd_whenValidationFailed_shouldShowBadRequest() throws Exception {
+        EmployeeDto employeeDto = new EmployeeDto();
+        employeeDto.setName("Sonali");
+        employeeDto.setImagePath("");
+        employeeDto.setGender("Female");
+        employeeDto.setSalary("100000");
+        employeeDto.setDepartments(List.of("Marketing"));
+        employeeDto.setNotes("Test");
+        String jsonRequest = objectMapper.writeValueAsString(employeeDto);
+        when(employeePayrollService.addEmployee(any())).thenReturn("Bad Request");
+        mockMvc.perform(MockMvcRequestBuilders.post("/employeepayrollservice/employee")
+                        .content(jsonRequest).contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void givenEmployeeForUpdate_whenValidationFailed_shouldShowBadRequest() throws Exception {
+        int id = 1;
+        EmployeeDto employeeDto = new EmployeeDto();
+        employeeDto.setName("Sonali");
+        employeeDto.setImagePath("");
+        employeeDto.setGender("Female");
+        employeeDto.setSalary("100000");
+        employeeDto.setDepartments(List.of("Marketing"));
+        employeeDto.setNotes("Test");
+
+        String jsonRequest = objectMapper.writeValueAsString(employeeDto);
+        when(employeePayrollService.updateEmployee(id, employeeDto))
+                .thenReturn("Bad Request");
+        mockMvc.perform(MockMvcRequestBuilders.put("/employeepayrollservice/employee/1")
+                        .content(jsonRequest).contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isBadRequest());
     }
 }
